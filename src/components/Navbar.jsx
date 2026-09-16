@@ -6,10 +6,27 @@ import logoInetl from "@/imports/Logo_INETL_7db89cf703.png";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import NavSearch from "./NavSearch";
 import NavDropMenu from "./NavDropMenu";
+import flagUS from "@/assets/flag-us.jpg";
+import flagTL from "@/assets/flag-tl.jpg";
+import flagPT from "@/assets/flag-pt.jpg";
 
-const LANG_CODES = { en: "EN", tet: "TL", pt: "PT" };
-const LANG_FLAGS = { en: "us", tet: "tl", pt: "pt" };
-const LANG_LABELS = { en: "English", tet: "Tetum", pt: "Português" };
+const LANG_CODES = {
+  en: "EN",
+  tet: "TL",
+  pt: "PT",
+};
+
+const LANG_LABELS = {
+  en: "English",
+  tet: "Tetum",
+  pt: "Português",
+};
+
+const LANG_FLAGS = {
+  en: flagUS,
+  tet: flagTL,
+  pt: flagPT,
+};
 
 function Navbar({ page, setPage }) {
   const { t, i18n } = useTranslation();
@@ -32,6 +49,7 @@ function Navbar({ page, setPage }) {
     { label: t("dropPublications"), key: "publications",  desc: t("descPublications") },
     { label: t("dropDashboard"),    key: "dashboard",     desc: t("descDashboard") },
   ];
+
   const svcItems = [
     { label: t("dropContact"),       key: "contact",       desc: t("descContact") },
     { label: t("dropPrograms"),      key: "programs",      desc: t("descPrograms") },
@@ -98,7 +116,14 @@ function Navbar({ page, setPage }) {
                 <ChevronDown size={12} style={{ transition: "transform 0.2s", transform: openDrop === "stats" ? "rotate(180deg)" : "none" }} />
                 {isStatsActive && <span className="absolute bottom-0 left-4 right-4 h-0.5 rounded-full" style={{ background: GOLD }} />}
               </button>
-              <NavDropMenu items={statsItems} id="stats" open={openDrop} setOpen={setOpenDrop} navigate={setPage} />
+
+              <NavDropMenu
+                items={statsItems}
+                id="stats"
+                open={openDrop}
+                setOpen={setOpenDrop}
+                navigate={setPage}
+              />
             </div>
 
             <NavItem k="news" label={t("navNews")} active={page === "news"} />
@@ -114,7 +139,14 @@ function Navbar({ page, setPage }) {
                 <ChevronDown size={12} style={{ transition: "transform 0.2s", transform: openDrop === "services" ? "rotate(180deg)" : "none" }} />
                 {page === "services" && <span className="absolute bottom-0 left-4 right-4 h-0.5 rounded-full" style={{ background: GOLD }} />}
               </button>
-              <NavDropMenu items={svcItems} id="services" open={openDrop} setOpen={setOpenDrop} navigate={setPage} />
+
+              <NavDropMenu
+                items={svcItems}
+                id="services"
+                open={openDrop}
+                setOpen={setOpenDrop}
+                navigate={setPage}
+              />
             </div>
           </div>
 
@@ -127,21 +159,48 @@ function Navbar({ page, setPage }) {
             <button onClick={() => setLangOpen(!langOpen)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider"
               style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", color: "rgba(255,255,255,0.8)" }}>
-              {LANG_FLAGS[lang]} {LANG_CODES[lang]}
-              <ChevronDown size={11} className={`transition-transform ${langOpen ? "rotate-180" : ""}`} />
+
+              <img
+                src={LANG_FLAGS[lang]}
+                alt={LANG_LABELS[lang]}
+                className="w-5 h-3.5 object-cover rounded-sm"
+              />
+
+              {LANG_CODES[lang]}
+
+              <ChevronDown
+                size={11}
+                className={`transition-transform ${langOpen ? "rotate-180" : ""}`}
+              />
             </button>
+
             {langOpen && (
               <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg overflow-hidden min-w-[160px]"
                 style={{ zIndex: 9999, border: "1px solid rgba(0,87,184,0.12)" }}>
+
                 {["en", "tet", "pt"].map(l => (
-                  <button key={l} onClick={() => { setLang(l); setLangOpen(false); }}
+                  <button
+                    key={l}
+                    onClick={() => { setLang(l); setLangOpen(false); }}
                     className="w-full text-left px-4 py-2.5 text-sm flex items-center gap-2.5 transition-colors hover:bg-gray-50"
-                    style={{ color: lang === l ? BLUE : INK, fontWeight: lang === l ? 700 : 400 }}>
-                    <span className="text-xs font-bold uppercase w-5" style={{ color: SLATE }}>{LANG_FLAGS[l]}</span>
+                    style={{ color: lang === l ? BLUE : INK, fontWeight: lang === l ? 700 : 400 }}
+                  >
+
+                    <img
+                      src={LANG_FLAGS[l]}
+                      alt={LANG_LABELS[l]}
+                      className="w-5 h-3.5 object-cover rounded-sm"
+                    />
+
                     <span className="flex-1">{LANG_LABELS[l]}</span>
-                    {lang === l && <span style={{ color: BLUE, fontSize: 13 }}>✓</span>}
+
+                    {lang === l && (
+                      <span style={{ color: BLUE, fontSize: 13 }}>✓</span>
+                    )}
+
                   </button>
                 ))}
+
               </div>
             )}
           </div>
@@ -150,24 +209,58 @@ function Navbar({ page, setPage }) {
           <button className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg"
             style={{ background: "rgba(255,255,255,0.08)" }}
             onClick={() => setMobileOpen(!mobileOpen)}>
-            {mobileOpen ? <X size={18} style={{ color: "#fff" }} /> : <Menu size={18} style={{ color: "#fff" }} />}
+            {mobileOpen
+              ? <X size={18} style={{ color: "#fff" }} />
+              : <Menu size={18} style={{ color: "#fff" }} />
+            }
           </button>
+
         </div>
       </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="lg:hidden border-t" style={{ background: NAV_BG, borderColor: "rgba(255,255,255,0.08)" }}>
+        <div className="lg:hidden border-t"
+          style={{ background: NAV_BG, borderColor: "rgba(255,255,255,0.08)" }}>
+
           <div className="py-2">
             <MobileNavItem k="home" label={t("home")} />
             <MobileNavItem k="about" label={t("about")} />
-            <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>{t("navStats")}</p>
-            {statsItems.map(i => <MobileNavItem key={i.key + i.label} k={i.key} label={i.label} />)}
+
+            <p
+              className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest"
+              style={{ color: "rgba(255,255,255,0.3)" }}
+            >
+              {t("navStats")}
+            </p>
+
+            {statsItems.map(i => (
+              <MobileNavItem
+                key={i.key + i.label}
+                k={i.key}
+                label={i.label}
+              />
+            ))}
+
             <MobileNavItem k="news" label={t("navNews")} />
             <MobileNavItem k="sdg" label={t("sdg")} />
-            <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>{t("navServices")}</p>
-            {svcItems.map(i => <MobileNavItem key={i.key + i.label} k={i.key} label={i.label} />)}
+
+            <p
+              className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest"
+              style={{ color: "rgba(255,255,255,0.3)" }}
+            >
+              {t("navServices")}
+            </p>
+
+            {svcItems.map(i => (
+              <MobileNavItem
+                key={i.key + i.label}
+                k={i.key}
+                label={i.label}
+              />
+            ))}
           </div>
+
         </div>
       )}
     </nav>
