@@ -54,7 +54,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ fontFamily: "'Public Sans', system-ui, sans-serif" }}>
+    <div className="min-h-screen flex flex-col overflow-x-hidden" style={{ fontFamily: "'Public Sans', system-ui, sans-serif" }}>
       <Navbar page={page} setPage={navigate} />
       <main className="flex-1">{render()}</main>
       <Footer setPage={navigate} />

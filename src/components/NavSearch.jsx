@@ -50,7 +50,7 @@ function NavSearch({ navigate }) {
         style={{
           background: open ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.08)",
           border: open ? "1px solid rgba(255,255,255,0.3)" : "1px solid rgba(255,255,255,0.16)",
-          width: open ? 280 : 36,
+          width: open ? "min(280px, calc(100vw - 140px))" : 36,
         }}>
         <Search size={14} className="flex-shrink-0" style={{ color: "rgba(255,255,255,0.6)" }} />
         {open && (
@@ -71,7 +71,7 @@ function NavSearch({ navigate }) {
       {/* Dropdown */}
       {open && (
         <div className="absolute right-0 top-full mt-2 bg-white rounded-lg overflow-hidden"
-          style={{ width: 340, zIndex: 9999, border: "1px solid rgba(0,87,184,0.12)", boxShadow: "0 12px 40px rgba(0,87,184,0.14)" }}>
+          style={{ width: "min(340px, calc(100vw - 16px))", maxWidth: "100vw", zIndex: 9999, border: "1px solid rgba(0,87,184,0.12)", boxShadow: "0 12px 40px rgba(0,87,184,0.14)" }}>
 
           {q.trim() === "" ? (
             <div className="p-3">
